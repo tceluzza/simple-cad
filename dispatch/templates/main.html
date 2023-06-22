@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+  </head>
+
+  <body>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link {% if nav == "view_calls" %}active{% endif %}" href="{% url 'dispatch:view_calls' %}">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link dropdown-toggle {% if nav == "new_call" or nav == "closed_calls" %}active{% endif %}"" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Calls</a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="{% url 'dispatch:new_call' %}">New Call</a></li>
+          <li><a class="dropdown-item" href="{% url 'dispatch:closed_calls' %}">Closed Calls</a></li>
+        </ul>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if nav == "shift" %}active{% endif %}" href="{% url 'dispatch:shift' %}">Shift</a>
+      </li>
+    </ul>
+
+    {% block content %}{% endblock %}
+  </body>
+</html>
