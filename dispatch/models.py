@@ -7,12 +7,12 @@ from django.contrib import admin
 class Officer(models.Model):
     first_name = models.CharField(max_length=32)
     last_name = models.CharField(max_length=32)
-    badge_number = models.IntegerField
     radio_id = models.CharField(max_length=32)
     active_call = models.ForeignKey(
             "Call",
             on_delete=models.SET_NULL,
             null=True,
+            blank=True,
     )
     vehicle = models.ForeignKey(
             "Vehicle", 
@@ -22,12 +22,16 @@ class Officer(models.Model):
     )   
 
     @admin.display(
-            boolean=True,
-            ordering="badge_number",
+            ordering="radio_id",
     )
 
+    def get_name(self):
+        name_string = "{}. {}"
+        return name_string.format(self.first_name[0], self.last_name)
+
     def __str__(self):
-        return self.first_name[0] + ". " + self.last_name + " (" + self.badge_number + ")"
+        name_string = "{} ({})"
+        return name_string.format( self.get_name(), self.radio_id )
 
 class Vehicle(models.Model):
     name = models.CharField(max_length=32)
@@ -37,6 +41,9 @@ class Vehicle(models.Model):
         "LicensePlate",
         on_delete=models.CASCADE,
     )
+
+    def __str__(self):
+        return self.name
 
 class LicensePlate(models.Model):
     MUNICIPAL_VEHICLE="MVN"
@@ -66,5 +73,13 @@ class LicensePlate(models.Model):
             default=MUNICIPAL_VEHICLE,
     )
 
+    plate_number = models.CharField(max_length=8)
+
+    def __str__(self):
+        return self.plate_number
+
 class Call(models.Model):
     name = models.CharField(max_length=64)
+
+    def __str__(self):
+        return self.name
