@@ -14,7 +14,7 @@ class Officer(models.Model):
             null=True,
             blank=True,
     )
-    vehicle = models.ForeignKey(
+    vehicle = models.OneToOneField(
             "Vehicle", 
             on_delete=models.SET_NULL,
             null=True,
@@ -34,16 +34,17 @@ class Officer(models.Model):
         return name_string.format( self.get_name(), self.radio_id )
 
 class Vehicle(models.Model):
-    name = models.CharField(max_length=32)
-    variety = models.CharField(max_length=32)
-    radio_id = models.CharField(max_length=4)
+    verbal_name = models.CharField(max_length=32, verbose_name="Vehicle")
+    variety = models.CharField(max_length=32, verbose_name="Model")
+    radio_id = models.CharField(max_length=4, verbose_name="Vehicle ID")
     license_plate = models.OneToOneField(
         "LicensePlate",
         on_delete=models.CASCADE,
+        verbose_name="License Plate",
     )
 
     def __str__(self):
-        return self.name
+        return self.radio_id
 
 class LicensePlate(models.Model):
     MUNICIPAL_VEHICLE="MVN"
