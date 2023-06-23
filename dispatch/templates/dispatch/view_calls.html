@@ -3,5 +3,33 @@
 {% block title %}View Calls{% endblock %}
 
 {% block content %}
-<h1>TO BE IMPLEMENTED</h1>
+<h1>Active Calls</h1>
+  <table class="table table-striped align-middle">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Call created at</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% if calls_list %}
+      {% for call in calls_list %}
+        <tr>
+          <td>{{call.name}}</td>
+          <td>{{call.time_generated}}</td>
+          <td><a href="{% url 'dispatch:call_details' call.id %}" class="btn btn-primary">View Call</a></td>
+        </tr>
+      {% endfor %}
+    {% endif %}
+    </tbody>
+    <tfoot class="table-secondary">
+      <tr>
+        <td><a href="{% url 'dispatch:new_call' %}" class="btn btn-success">New Call</a></td>
+        <td/>
+        <td/>
+      </tr>
+    </tfoot>
+  </table>
+
 {% endblock %}

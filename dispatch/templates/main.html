@@ -10,20 +10,33 @@
   <body>
     <ul class="nav nav-tabs">
       <li class="nav-item">
-        <a class="nav-link {% if nav == "view_calls" %}active{% endif %}" href="{% url 'dispatch:view_calls' %}">Home</a>
+        <a class="nav-link {{home_nav}}" href="{% url 'dispatch:view_calls' %}">Home</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link dropdown-toggle {% if nav == "new_call" or nav == "closed_calls" %}active{% endif %}"" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Calls</a>
+        <a class="nav-link dropdown-toggle {{calls_nav}}" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Calls</a>
         <ul class="dropdown-menu">
           <li><a class="dropdown-item" href="{% url 'dispatch:new_call' %}">New Call</a></li>
           <li><a class="dropdown-item" href="{% url 'dispatch:closed_calls' %}">Closed Calls</a></li>
         </ul>
       </li>
       <li class="nav-item">
-        <a class="nav-link {% if nav == "shift" %}active{% endif %}" href="{% url 'dispatch:shift' %}">Shift</a>
+        <a class="nav-link {{shift_nav}}" href="{% url 'dispatch:shift' %}">Shift</a>
       </li>
+
+      <li class="nav-item">
+        {% if user.is_authenticated %}
+          {% comment %} Welcome, {{ user.get_username }} {% endcomment %}
+          <a class="nav-link" href="{% url 'dispatch:not_implemented' %}?next={{ request.path }}">Logout ({{user.get_username}})</a></li>
+          {% comment %} <a href="{% url 'registration:logout' %}?next={{ request.path }}">Logout</a></li> {% endcomment %}
+        {% else %}
+          <a class="nav-link" href="{% url 'dispatch:not_implemented' %}?next={{ request.path }}">Login</a></li>
+          {% comment %} <a href="{% url 'registration:login' %}?next={{ request.path }}">Login</a></li> {% endcomment %}
+        {% endif %}
     </ul>
 
-    {% block content %}{% endblock %}
+    <div class="container-lg">
+    {% block content %}
+    {% endblock %}
+    </div>
   </body>
 </html>

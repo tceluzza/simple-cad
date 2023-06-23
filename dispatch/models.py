@@ -81,6 +81,11 @@ class LicensePlate(models.Model):
 
 class Call(models.Model):
     name = models.CharField(max_length=64)
+    active = models.BooleanField(default=True)
+    time_generated = models.DateTimeField(
+            verbose_name="Created at",
+            default=timezone.now,
+    )
 
     def __str__(self):
         return self.name
