@@ -14,20 +14,28 @@ class CallsListView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        #context["calls_list"] = Call.objects.filter
         context["home_nav"] = "active"
         return context
 
 class CallDetailView(generic.DetailView):
     model = Call
     template_name = "dispatch/call_details.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["calls_nav"] = "active"
+        return context
 
 def new_call(request):
-    context = {"calls_nav":"active"}
+    context = {"calls_nav":"active",
+               "new_call_nav":"active",
+               }
     return render(request, "dispatch/new_call.html", context)
 
 def closed_calls(request):
-    context = {"calls_nav":"active"}
+    context = {"calls_nav":"active",
+               "closed_calls_nav":"active",
+               }
     return render(request, "dispatch/closed_calls.html", context)
 
 def shift(request):

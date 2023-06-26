@@ -8,35 +8,59 @@
   </head>
 
   <body>
-    <ul class="nav nav-tabs">
-      <li class="nav-item">
-        <a class="nav-link {{home_nav}}" href="{% url 'dispatch:view_calls' %}">Home</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link dropdown-toggle {{calls_nav}}" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Calls</a>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="{% url 'dispatch:new_call' %}">New Call</a></li>
-          <li><a class="dropdown-item" href="{% url 'dispatch:closed_calls' %}">Closed Calls</a></li>
-        </ul>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link {{shift_nav}}" href="{% url 'dispatch:shift' %}">Shift</a>
-      </li>
+    {% comment %} <div class="container-fluid pt-3"> {% endcomment %}
+      <div>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark bg-gradient px-2">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+        <div class="navbar-nav nav-pills nav-justified collapse navbar-collapse" id="navbarNav">
+          <a class="nav-item nav-link {{home_nav}}" href="{% url 'dispatch:view_calls' %}">Home</a>
+          <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle {{calls_nav}}" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Calls</a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li><a class="dropdown-item {{new_call_nav}}" href="{% url 'dispatch:new_call' %}">New Call</a></li>
+              <li><a class="dropdown-item {{closed_calls_nav}}" href="{% url 'dispatch:closed_calls' %}">Closed Calls</a></li>
+            </ul>
+          </div>
+          <a class="nav-item nav-link {{shift_nav}}" href="{% url 'dispatch:shift' %}">Shift</a>
+          {% if user.is_authenticated %}
+            <a class="nav-item nav-link" href="{% url 'dispatch:not_implemented' %}?next={{ request.path }}">Logout ({{user.get_username}})</a></li>
+            {% comment %} <a href="{% url 'registration:logout' %}?next={{ request.path }}">Logout</a></li> {% endcomment %}
+          {% else %}
+            <div class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Login</a>
 
-      <li class="nav-item">
-        {% if user.is_authenticated %}
-          {% comment %} Welcome, {{ user.get_username }} {% endcomment %}
-          <a class="nav-link" href="{% url 'dispatch:not_implemented' %}?next={{ request.path }}">Logout ({{user.get_username}})</a></li>
-          {% comment %} <a href="{% url 'registration:logout' %}?next={{ request.path }}">Logout</a></li> {% endcomment %}
-        {% else %}
-          <a class="nav-link" href="{% url 'dispatch:not_implemented' %}?next={{ request.path }}">Login</a></li>
-          {% comment %} <a href="{% url 'registration:login' %}?next={{ request.path }}">Login</a></li> {% endcomment %}
-        {% endif %}
-    </ul>
+              <form class="dropdown-menu p-4">
+                <div class="mb-3">
+                  <label for="exampleDropdownFormEmail2" class="form-label">Email address</label>
+                  <input type="email" class="form-control" id="exampleDropdownFormEmail2" placeholder="email@example.com">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleDropdownFormPassword2" class="form-label">Password</label>
+                  <input type="password" class="form-control" id="exampleDropdownFormPassword2" placeholder="Password">
+                </div>
+                <div class="mb-3">
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="dropdownCheck2">
+                    <label class="form-check-label" for="dropdownCheck2">
+                      Remember me
+                    </label>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Sign in</button>
+              </form>
+            </div>
+            {% comment %} <a class="nav-item nav-link" href="{% url 'dispatch:not_implemented' %}?next={{ request.path }}">Login</a></li> {% endcomment %}
+            {% comment %} <a href="{% url 'registration:login' %}?next={{ request.path }}">Login</a></li> {% endcomment %}
+          {% endif %}
+        </div>                   
+    </nav>
 
     <div class="container-lg">
     {% block content %}
     {% endblock %}
-    </div>
+    {% comment %} </div> {% endcomment %}
+  </div>
   </body>
 </html>
