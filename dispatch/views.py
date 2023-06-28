@@ -1,7 +1,11 @@
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views import generic
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from .models import Call
+
+from .models import Call, Officer
+from .forms import CallForm
 
 # Create your views here.
 
@@ -17,6 +21,27 @@ class CallsListView(generic.ListView):
         context["home_nav"] = "active"
         return context
 
+class CallCreateView(CreateView):
+    model = Call
+    fields = ["name"]
+    template_name = "dispatch/call_create_form.html"
+    
+
+class CallUpdateView(UpdateView):
+    model = Call
+    fields = ["name", "active", "notes",]
+    template_name = "dispatch/call_update_form.html"
+
+class CallDeleteView(DeleteView):
+    model = Call
+    success_url = reverse_lazy("dispatch:view_calls")
+
+
+# class CallFormView(generic.FormView):
+#     template_name = "dispatch.call_details.html"
+#     form_class = CallForm
+#     success_url = "#"
+
 class CallDetailView(generic.DetailView):
     model = Call
     template_name = "dispatch/call_details.html"
@@ -24,6 +49,11 @@ class CallDetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["calls_nav"] = "active"
+        
+        avofc = Officer.objects.filter(active_call=None)
+        if (avofc.count() > 0):
+            context["available_officers"] = avofc
+        
         return context
 
 def new_call(request):

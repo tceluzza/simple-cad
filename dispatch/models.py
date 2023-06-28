@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.urls import reverse
 from django.contrib import admin
 
 # Create your models here.
@@ -82,10 +83,14 @@ class LicensePlate(models.Model):
 class Call(models.Model):
     name = models.CharField(max_length=64)
     active = models.BooleanField(default=True)
+    notes = models.TextField(null=True)
     time_generated = models.DateTimeField(
             verbose_name="Created at",
             default=timezone.now,
     )
+    
+    def get_absolute_url(self):
+        return reverse("dispatch:call_update", kwargs={"pk": self.pk})
 
     def __str__(self):
         return self.name

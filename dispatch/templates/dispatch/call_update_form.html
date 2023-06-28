@@ -4,15 +4,15 @@
 
 {% block content %}
 <h1>{{ call.name }}</h1>
-<h2>Notes</h2>
 
-{% comment %} <form method="POST" class="post-form">{% csrf_token %}
+<form method="POST" class="post-form">{% csrf_token %}
   {{ form.as_p }}
-  <button type="submit" class="save btn btn-default">Send</button>
-</form> {% endcomment %}
+  <button class="btn btn-success" type="submit" class="save btn btn-default">Save</button>
+  <a class="btn btn-danger" href="{% url "dispatch:call_delete" call.id %}">Delete</a>
+</form>
 
 
-<h2>Officers Assigned</h2>
+{% comment %} <h2>Officers Assigned</h2>
 <div class="px-4">  
   <ul>
     {% for ofc in call.officer_set.all %}
@@ -31,7 +31,7 @@
       {% endif %}
 
     </ul>
-  </div>
+  </div> {% endcomment %}
 
 </div>
 {% endblock %}

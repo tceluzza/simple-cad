@@ -18,14 +18,14 @@
         <tr>
           <td>{{call.name}}</td>
           <td>{{call.time_generated}}</td>
-          <td><a href="{% url 'dispatch:call_details' call.id %}" class="btn btn-primary">View Call</a></td>
+          <td><a href="{% url 'dispatch:call_update' call.id %}" class="btn btn-primary">View Call</a></td>
         </tr>
       {% endfor %}
     {% endif %}
     </tbody>
     <tfoot class="table-secondary">
       <tr>
-        <td><a href="{% url 'dispatch:new_call' %}" class="btn btn-success">New Call</a></td>
+        <td><a href="{% url 'dispatch:call_add' %}" class="btn btn-success">New Call</a></td>
         <td/>
         <td/>
       </tr>
